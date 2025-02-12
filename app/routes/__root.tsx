@@ -36,6 +36,7 @@ function RootComponent() {
       <div className="flex gap-2">
         <Link to="/">Home</Link>
         <Link to="/users">Users</Link>
+        <Link to="/users/new">New User</Link>
       </div>
       <Outlet />
     </RootDocument>

@@ -1,12 +1,12 @@
 import { Await, createFileRoute } from "@tanstack/react-router";
+import { getUserQueryOptions } from "../../utils";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
-import { fetchUser, fetchUserDeferred } from "../../utils";
 import { Suspense } from "react";
 const getUserServerFn = createServerFn({ method: "GET" })
   .validator(z.number())
-  .handler(async ({ data }) => {
-    return fetchUserDeferred(data);
+  .handler(async ({ data, context }) => {
+    return context.queryClient.ensureQueryData(getUserQueryOptions(data));
   });
 
 export const Route = createFileRoute("/users/$userId")({

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 import { createUser, inputUserSchema } from "../../utils";
 import { createServerFn } from "@tanstack/start";
 
@@ -8,24 +8,28 @@ const createUserServerFn = createServerFn({ method: "POST" })
     await createUser(data);
   });
 
-const createUserAction = (formData: FormData) => {
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const username = formData.get("username");
-  createUserServerFn({
-    data: {
-      name: name as string,
-      email: email as string,
-      username: username as string,
-    },
-  });
-};
-
 export const Route = createFileRoute("/users/new")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const router = useRouter();
+  const createUserAction = async (formData: FormData) => {
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const username = formData.get("username");
+    await createUserServerFn({
+      data: {
+        name: name as string,
+        email: email as string,
+        username: username as string,
+      },
+    });
+
+    await router.invalidate();
+    router.navigate({ to: "/users" });
+  };
+
   return (
     <form className="flex flex-col gap-2" action={createUserAction}>
       <h1>Create User</h1>
