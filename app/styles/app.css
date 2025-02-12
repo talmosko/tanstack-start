@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/* Basic typography with more colorful gradients */
+h1 {
+  @apply text-[2.75rem] font-extrabold leading-tight mb-6 tracking-tight;
+  @apply bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent;
+}
+
+h2 {
+  @apply text-4xl font-bold leading-snug mb-5 tracking-tight;
+  @apply bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent;
+}
+
+h3 {
+  @apply text-2xl font-semibold leading-relaxed mb-4;
+  @apply bg-gradient-to-r from-teal-500 to-emerald-500 bg-clip-text text-transparent;
+}
+
+h4 {
+  @apply text-xl font-semibold leading-relaxed mb-3;
+  @apply bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent;
+}
+
+/* Links with more vibrant colors */
+a {
+  @apply text-indigo-600 no-underline transition-all duration-200 ease-in-out border-b-2 border-transparent;
+}
+
+a:hover {
+  @apply text-purple-600 border-current;
+  @apply scale-105 transform;
+}
+
+/* Lists with colorful accents */
+ul, ol {
+  @apply my-5 pl-7 text-gray-700;
+}
+
+ul {
+  @apply list-none;
+}
+
+ul li {
+  @apply relative;
+}
+
+ul li::before {
+  @apply content-['•'] font-bold absolute -left-5;
+  @apply bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent;
+}
+
+ol {
+  @apply list-decimal marker:text-indigo-500;
+}
+
+li {
+  @apply mb-2.5 leading-relaxed;
+}
+
+/* Paragraphs with better contrast */
+p {
+  @apply mb-5 leading-relaxed text-gray-700;
+  @apply hover:text-gray-900 transition-colors duration-200;
+}
+
+/* Add a subtle gradient background to the whole page if you want */
+body {
+  @apply h-screen bg-gradient-to-br from-white via-purple-200 to-blue-200;
+}
+
+/* Input fields with gradient focus states */
+input {
+  @apply px-4 py-2 rounded-lg border border-gray-300 bg-white/80 text-gray-700;
+  @apply transition-all duration-200 ease-in-out;
+  @apply focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent;
+  @apply focus:bg-white focus:shadow-lg;
+  @apply placeholder:text-gray-400;
+}
