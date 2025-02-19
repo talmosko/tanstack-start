@@ -10,17 +10,19 @@ import {
 export const Route = createFileRoute("/users/$userId")({
   component: RouteComponent,
   loader: async ({ params, context }) => {
-    const userPromise = await fetchUserDeferred(Number(params.userId));
-    return { userPromise };
+    // const userPromise = await fetchUserDeferred(Number(params.userId));
+    // return { userPromise };
   },
 });
 
 function RouteComponent() {
   const params = Route.useParams();
   const router = useRouter();
-  const user = useSuspenseQuery(getUserQueryOptions(Number(params.userId)));
+  const user = useSuspenseQuery(
+    getUserDeferredQueryOptions(Number(params.userId))
+  );
 
-  const { userPromise: userDeferredPromise } = Route.useLoaderData();
+  //   const { userPromise: userDeferredPromise } = Route.useLoaderData();
 
   const [counter, setCounter] = useState(0);
   return (
@@ -30,7 +32,7 @@ function RouteComponent() {
         <p>{user.data.email}</p>
 
         <div>
-          <p>{new Date(userDeferredPromise.date).toLocaleTimeString()}</p>
+          {/* <p>{new Date(userDeferredPromise.date).toLocaleTimeString()}</p> */}
         </div>
 
         <p>{counter}</p>

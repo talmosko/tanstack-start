@@ -10,7 +10,6 @@ import { Suspense } from "react";
 
 const fetchUsersServer = createServerFn().handler(async () => {
   const users = await getAllUsers();
-  console.log("Users on server", users);
   return users;
 });
 
@@ -24,7 +23,6 @@ export const Route = createFileRoute("/users")({
 
 function RouteComponent() {
   const users = Route.useLoaderData();
-  console.log("Users on client", users);
   return (
     <>
       <h1>Users</h1>
