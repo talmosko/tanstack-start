@@ -1,9 +1,9 @@
 import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
-import { createUser, inputUserSchema } from "../../utils";
 import { createServerFn } from "@tanstack/start";
+import { createUser, userSchema } from "@utils/db";
 
 const createUserServerFn = createServerFn({ method: "POST" })
-  .validator(inputUserSchema)
+  .validator(userSchema)
   .handler(async ({ data }) => {
     await createUser(data);
   });

@@ -1,38 +1,42 @@
-import { Await, createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/start";
-import { z } from "zod";
-import { fetchUser, fetchUserDeferred, User } from "../../utils";
-import { Suspense } from "react";
-const getUserServerFn = createServerFn({ method: "GET" })
-  .validator(z.number())
-  .handler(async ({ data }) => {
-    return fetchUserDeferred(data);
-  });
+import { Await, createFileRoute, useRouter } from "@tanstack/react-router";
+import { Suspense, useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  fetchUserDeferred,
+  getUserDeferredQueryOptions,
+  getUserQueryOptions,
+} from "@/utils/query";
 
-const URL = "http://localhost:3000";
 export const Route = createFileRoute("/users/$userId")({
   component: RouteComponent,
-  loader: async ({ params }) => {
-    const user = fetch(`${URL}/api/users/${params.userId}`).then((res) =>
-      res.json()
-    );
-
-    return { user: user as Promise<User> };
+  loader: async ({ params, context }) => {
+    const userPromise = await fetchUserDeferred(Number(params.userId));
+    return { userPromise };
   },
 });
 
 function RouteComponent() {
-  const { user } = Route.useLoaderData();
+  const params = Route.useParams();
+  const router = useRouter();
+  const user = useSuspenseQuery(getUserQueryOptions(Number(params.userId)));
+
+  const { userPromise: userDeferredPromise } = Route.useLoaderData();
+
+  const [counter, setCounter] = useState(0);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Await promise={user}>
-        {(user) => (
-          <div>
-            <h2>{user.name}</h2>
-            <p>{user.email}</p>
-          </div>
-        )}
-      </Await>
-    </Suspense>
+    <>
+      <div className="flex flex-col">
+        <h2>{user.data.email}</h2>
+        <p>{user.data.email}</p>
+
+        <div>
+          <p>{new Date(userDeferredPromise.date).toLocaleTimeString()}</p>
+        </div>
+
+        <p>{counter}</p>
+        <button onClick={() => setCounter(counter + 1)}>+1</button>
+        <button onClick={() => router.invalidate()}>invalidate</button>
+      </div>
+    </>
   );
 }

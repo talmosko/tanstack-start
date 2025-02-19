@@ -4,11 +4,12 @@ import {
   Outlet,
   useLoaderData,
 } from "@tanstack/react-router";
-import { fetchUsers, User } from "../utils";
+import { getAllUsers, User } from "../utils/db";
 import { createServerFn } from "@tanstack/start";
+import { Suspense } from "react";
 
 const fetchUsersServer = createServerFn().handler(async () => {
-  const users = await fetchUsers();
+  const users = await getAllUsers();
   console.log("Users on server", users);
   return users;
 });
@@ -16,7 +17,6 @@ const fetchUsersServer = createServerFn().handler(async () => {
 export const Route = createFileRoute("/users")({
   loader: async () => {
     const users = await fetchUsersServer();
-    console.log("Users on client", users);
     return users;
   },
   component: RouteComponent,
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/users")({
 
 function RouteComponent() {
   const users = Route.useLoaderData();
+  console.log("Users on client", users);
   return (
     <>
       <h1>Users</h1>
@@ -41,7 +42,9 @@ function RouteComponent() {
             </li>
           ))}
         </ul>
-        <Outlet />
+        <Suspense fallback="loading...">
+          <Outlet />
+        </Suspense>
       </div>
     </>
   );
