@@ -60,27 +60,27 @@
       "function RouteComponent() {",
       "  const users = Route.useLoaderData();",
       "  return (",
-      "    <div className=\"flex gap-10\">",
-      "      <div className=\"w-64\">",
-      "        <div className=\"flex items-center justify-between mb-4\">",
-      "          <h1>Users</h1>",
+      "    <>",
+      "      <h1>Users</h1>",
+      "      <div className=\"flex gap-10\">",
+      "        <div className=\"w-64\">",
+      "          <ul className=\"space-y-2\">",
+      "            {users.users.map((user) => (",
+      "              <li key={user.id}>",
+      "                <Link",
+      "                  to=\"/users/\\$userId\"",
+      "                  params={{ userId: user.id.toString() }}",
+      "                  className=\"hover:underline\"",
+      "                >",
+      "                  {user.name}",
+      "                </Link>",
+      "              </li>",
+      "            ))}",
+      "          </ul>",
       "        </div>",
-      "        <ul className=\"space-y-2\">",
-      "          {users.map((user) => (",
-      "            <li key={user.id}>",
-      "              <Link",
-      "                to=\"/users/\\$userId\"",
-      "                params={{ userId: user.id.toString() }}",
-      "                className=\"hover:underline\"",
-      "              >",
-      "                {user.name}",
-      "              </Link>",
-      "            </li>",
-      "          ))}",
-      "        </ul>",
+      "        {/* <Outlet /> */}",
       "      </div>",
-	  "       {/* <Outlet /> */}",
-      "    </div>",
+      "    </>",
       "  );",
       "}"
     ],
@@ -89,7 +89,7 @@
 
   "User ID Double Deferred Route": {
     "scope": "typescript,typescriptreact",
-    "prefix": "userIdDoubleDeferredRoute",
+    "prefix": "userIdMixedRoute",
     "body": [
       "import { Await, createFileRoute, useRouter } from '@tanstack/react-router'",
       "import { Suspense, useState } from 'react'",
@@ -140,5 +140,52 @@
       "}"
     ],
     "description": "Creates a user route component with both immediate and deferred data loading using TanStack Router and React Query"
+  },
+
+  "userIdImportantRoute": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "userIdImportantRoute",
+    "body": [
+      "import { createFileRoute } from '@tanstack/react-router'",
+      "import { getUserDeferredQueryOptions } from '@/utils/query'",
+      "",
+      "export const Route = createFileRoute('/users/\\$userId')({",
+      "  component: RouteComponent,",
+      "  loader: async ({ params, context }) => {",
+      "    const user = await context.queryClient.ensureQueryData(",
+      "      getUserDeferredQueryOptions(Number(params.userId))",
+      "    );",
+      "    return { user };",
+      "  },",
+      "});"
+    ],
+    "description": "Creates a user route with ensureQueryData using TanStack Router and React Query"
+  },
+
+  "userIdImportantComponent": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "userIdImportantComponent",
+    "body": [
+      "function RouteComponent() {",
+      "  const params = Route.useParams();",
+      "  const router = useRouter();",
+      "  const { user } = Route.useLoaderData();",
+      "",
+      "  const [counter, setCounter] = useState(0);",
+      "  return (",
+      "    <>",
+      "      <div className=\"flex flex-col\">",
+      "        <h2>{user.email}</h2>",
+      "        <p>{new Date(user.date).toLocaleTimeString()}</p>",
+      "",
+      "        <p>{counter}</p>",
+      "        <button onClick={() => setCounter(counter + 1)}>+1</button>",
+      "        <button onClick={() => router.invalidate()}>invalidate</button>",
+      "      </div>",
+      "    </>",
+      "  );",
+      "}"
+    ],
+    "description": "Creates a user component that displays user information and includes counter functionality"
   }
 }
