@@ -34,7 +34,7 @@ function RootComponent() {
   return (
     <RootDocument>
       <div className="m-10">
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-5">
           <Link to="/">Home</Link>
           <Link to="/users">Users</Link>
           <Link to="/users/new">New User</Link>
