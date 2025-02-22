@@ -1,6 +1,6 @@
-import { queryOptions } from "@tanstack/react-query";
-import { User } from "@utils/db";
-const DEPLOY_URL = "http://localhost:3000";
+import { queryOptions } from '@tanstack/react-query';
+import { User } from '@utils/db';
+const DEPLOY_URL = 'http://localhost:3000';
 
 type UserWithDate = User & { date: Date };
 
@@ -17,12 +17,12 @@ export const fetchUserDeferred = async (id: number) => {
 // Query options for fetching a single user
 export const getUserQueryOptions = (id: number) =>
   queryOptions({
-    queryKey: ["user", id] as const,
+    queryKey: ['user', id] as const,
     queryFn: () => fetchUser(id),
   });
 
 export const getUserDeferredQueryOptions = (id: number) =>
   queryOptions({
-    queryKey: ["user-deferred", id] as const,
+    queryKey: ['user-deferred', id] as const,
     queryFn: () => fetchUserDeferred(id),
   });

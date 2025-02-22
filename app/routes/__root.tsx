@@ -3,12 +3,12 @@ import {
   createRootRouteWithContext,
   Link,
   ScrollRestoration,
-} from "@tanstack/react-router";
-import { Outlet } from "@tanstack/react-router";
-import { Meta, Scripts } from "@tanstack/start";
-import * as React from "react";
-import "../styles/app.css";
-import { QueryClient } from "@tanstack/react-query";
+} from '@tanstack/react-router';
+import { Outlet } from '@tanstack/react-router';
+import { Meta, Scripts } from '@tanstack/start';
+import * as React from 'react';
+import '../styles/app.css';
+import { QueryClient } from '@tanstack/react-query';
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -16,14 +16,14 @@ export const Route = createRootRouteWithContext<{
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       {
-        title: "TanStack Start Starter",
+        title: 'TanStack Start Starter',
       },
     ],
   }),

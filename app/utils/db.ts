@@ -1,6 +1,6 @@
-import { queryOptions } from "@tanstack/react-query";
-import { Prisma, PrismaClient } from "@prisma/client";
-import { z } from "vinxi";
+import { queryOptions } from '@tanstack/react-query';
+import { Prisma, PrismaClient } from '@prisma/client';
+import { z } from 'vinxi';
 const prisma = new PrismaClient();
 
 export type User = Prisma.UserGetPayload<{}>;
@@ -17,7 +17,7 @@ export const createUser = async (user: Prisma.UserCreateInput) => {
       data: user,
     });
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error('Error creating user:', error);
     throw error;
   }
 };
@@ -26,10 +26,10 @@ export const createUser = async (user: Prisma.UserCreateInput) => {
 export const getAllUsers = async () => {
   try {
     const users = await prisma.user.findMany();
-    console.log("Users", users);
+    console.log('Users', users);
     return users;
   } catch (error) {
-    console.error("Error fetching users:", error);
+    console.error('Error fetching users:', error);
     throw error;
   }
 };
